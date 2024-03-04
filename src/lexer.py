@@ -19,6 +19,8 @@ def tokenize(userinput):
     tokens = []
     if userinput == ' ':
         pass
+    elif userinput == '':
+        pass
     else:
         for token_type, pattern in TOKENS:
             matches = re.findall(pattern, userinput)
@@ -26,3 +28,6 @@ def tokenize(userinput):
                 tokens.append((token_type, match))
         return tokens
 
+with open('/Users/keli/Documents/GitHub/C-_master/.tests/return_2.c') as filename:
+    for line in filename:
+        print(tokenize(line))
