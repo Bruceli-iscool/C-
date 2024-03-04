@@ -6,7 +6,6 @@ import re
 TOKENS = [
     ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),  
     ('CONSTANT', r'\d+(\.\d+)?'),
-    ('KEYWORD', r'(int|float|char|void)'),
     ('VOID', r'void'), 
     ('RETURN', r'return'),  
     ('OPEN_PAREN', r'\('),  
@@ -18,7 +17,7 @@ TOKENS = [
 
 def tokenize(userinput):
     tokens = []
-    if userinput == '\s':
+    if userinput == ' ':
         pass
     else:
         for token_type, pattern in TOKENS:
@@ -27,7 +26,3 @@ def tokenize(userinput):
                 tokens.append((token_type, match))
         return tokens
 
-filename = input('>')
-with open(filename) as file:
-    for line in file:
-        print(tokenize(line))
