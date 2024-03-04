@@ -9,8 +9,9 @@ class Function:
         self.action = action
 
 class Return:
-    def _init_(self, expression):
+    def __init__(self, expression):
         self.expression = expression
 
 class Constant:
-    pass
+    def __init__(self, value):
+        self.value = value
