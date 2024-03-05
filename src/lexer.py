@@ -27,7 +27,3 @@ def tokenize(userinput):
             for match in matches:
                 tokens.append((token_type, match))
         return tokens
-
-with open('/Users/keli/Documents/GitHub/C-_master/.tests/return_2.c') as filename:
-    for line in filename:
-        print(tokenize(line))
