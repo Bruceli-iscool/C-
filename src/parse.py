@@ -38,3 +38,14 @@ class Parser:
             exp = self.parseExpression()
             if self.matchToken("SEMICOLON"):
                 return f"return {exp};"
+            else:
+                raise ValueError("c-: Expected ';'")
+        
+    def parseExpression(self):
+        return self.parseInt()
+    
+    def parseIdentifier(self):
+        if self.matchToken("IDENTIFIER"):
+            return self.tokens[self.index][1]
+        else:
+            raise ValueError("c-: Expected an identifier")
