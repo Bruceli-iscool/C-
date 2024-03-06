@@ -9,7 +9,7 @@ class Parser:
 
     def parse(self):
         return self.parseFunc()
-    
+    # change error handling
     def parseFunc(self):
         """Parse functions"""
         if self.matchToken("INT_KEYWORD"):
@@ -49,3 +49,12 @@ class Parser:
             return self.tokens[self.index][1]
         else:
             raise ValueError("c-: Expected an identifier")
+        
+    def parseInt(self):
+        if self.match_token("INT_CONSTANT"):
+            return self.tokens[self.index][1]
+        else:
+            raise ValueError("c-: Expected an integer constant")
+        
+    def matchToken(self, expected_type):
+        return self.index < len(self.tokens) and self.tokens[self.index][0] == expected_type
