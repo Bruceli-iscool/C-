@@ -1,29 +1,27 @@
 import re
 
-"""Lexer for C-"""
+class Lexer:
+    def __init__(self, text):
+        self.text = text
+        self.tokens = []
+        self.current_token = None
+        self.token_index = -1
+        self.tokenize()
 
-# tokens
-TOKENS = [
-    ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),  
-    ('CONSTANT', r'\d+(\.\d+)?'),
-    ('VOID', r'void'), 
-    ('RETURN', r'return'),  
-    ('OPEN_PAREN', r'\('),  
-    ('CLOSE_PAREN', r'\)'),  
-    ('OPEN_BRACE', r'\{'),  
-    ('CLOSE_BRACE', r'\}'),  
-    ('SEMICOLON', r';')
-]
+    def tokenize(self):
+        self.tokens = re.findall(r'\bint\b|\bvoid\b|\breturn\b|\b\d+\b|\w+|[()\{\};]', self.text)
 
-def tokenize(userinput):
-    tokens = []
-    if userinput == ' ':
-        pass
-    elif userinput == '':
-        pass
-    else:
-        for token_type, pattern in TOKENS:
-            matches = re.findall(pattern, userinput)
-            for match in matches:
-                tokens.append((token_type, match))
-        return tokens
+    def advance(self):
+        self.token_index += 1
+        if self.token_index < len(self.tokens):
+            self.current_token = self.tokens[self.token_index]
+        else:
+            self.current_token = None
+
+    def get_next_token(self):
+        self.advance()
+        return self.current_token
+text = "int sum() { return 10; }"
+lexer = Lexer(text)
+tokens = lexer.tokens
+print(tokens)

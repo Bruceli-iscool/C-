@@ -1,60 +1,77 @@
-import lexer
-
-
+# Parser for C-
 class Parser:
-    """Parser for C-"""
     def __init__(self, tokens):
+        # make tokens an object
         self.tokens = tokens
-        self.index = 0
+        self.currentToken = None
+        self.index = -1
+        self.advance()
+
+    def advance(self):
+        self.index += 1
+        if self.index < len(self.tokens):
+            # find current token
+            self.currentToken = self.tokens[self.index]
+        else:
+            self.currentToken = None
 
     def parse(self):
-        return self.parseFunc()
-    # change error handling
-    def parseFunc(self):
-        """Parse functions"""
-        if self.matchToken("INT_KEYWORD"):
-            self.index += 1
-            identifier = self.parseIdentifier()
-            if self.matchToken("OPEN_PAREN") and self.matchToken("CLOSED_PAREN") and self.matchToken("VOID_KEYWORD") or self.matchToken("OPEN_PAREN") and self.matchToken("CLOSED_PAREN"):
-                self.index += 3
-                if self.matchToken("OPEN_BRACE"):
-                    self.index += 1
-                    statement = self.parseStatement()
-                    if self.matchToken("CLOSE_BRACE"):
-                        return f"int {identifier}(void)" + "{" + f"\n{statement}" +"}"       
+        return self.program()
+    
+    def program(self):
+        return self.function()
+    
+    # Handle fucntions (for now the main function)
+    def function(self):
+        if self.currentToken == "int":
+            self.advance()  
+            if self.currentToken.isidentifier():
+                function_name = self.currentToken
+                self.advance()  
+                if self.currentToken == "(":
+                    self.advance()  
+                    if self.currentToken == "void":
+                        self.advance() 
+                        if self.currentToken == ")":
+                            self.advance() 
+                            if self.currentToken == "{":
+                                self.advance()  
+                                statement = self.statement()
+                                if self.currentToken == "}":
+                                    return (function_name, statement)
+                                # error handling
+                                else:
+                                    print("C-: SyntaxError: Expected closing '}'")
+                            else:
+                                print("C-: SyntaxError: Expected '{'")
+                        else:
+                            print("C-: SyntaxError: Expected closing ')'")
+                    # skip void
                     else:
-                        raise ValueError("c-: Expexted closing '}'")
+                        self.advance()
                 else:
-                    raise ValueError("c-: Unexpected '}'")
+                    print("C-: SyntaxError: Expected '('")
             else:
-                raise ValueError("c-: Expected '()'")
+                print("C-: SyntaxError: Expected Identifier after int")
         else:
-            raise ValueError("c-: Expected function type")
-    
-    def parseStatement(self):
-        """Parse Statements"""
-        if self.matchToken("RETURN_KEYWORD"):
-            self.index += 1
-            exp = self.parseExpression()
-            if self.matchToken("SEMICOLON"):
-                return f"return {exp};"
+            print("C-: SyntaxError: Expected 'int'")
+    def statement(self):
+        if self.currentToken == "return":
+            self.advance()
+            expression = self.exp()
+            if self.currentToken == ";":
+                self.advance()
+                return expression
             else:
-                raise ValueError("c-: Expected ';'")
-        
-    def parseExpression(self):
-        return self.parseInt()
-    
-    def parseIdentifier(self):
-        if self.matchToken("IDENTIFIER"):
-            return self.tokens[self.index][1]
+                print("C-: SyntaxError: Expected ';'")
+
+    def exp(self):
+        if self.currentToken.isdigit():
+            exp_value = int(self.currentToken)
+            self.advance() 
+            return exp_value
         else:
-            raise ValueError("c-: Expected an identifier")
-        
-    def parseInt(self):
-        if self.match_token("INT_CONSTANT"):
-            return self.tokens[self.index][1]
-        else:
-            raise ValueError("c-: Expected an integer constant")
-        
-    def matchToken(self, expected_type):
-        return self.index < len(self.tokens) and self.tokens[self.index][0] == expected_type
+            print("C-:SyntaxError: Expected value")
+
+parse = Parser(['int', 'sum', '(', 'void', ')', '{', 'return', '10', ';', '}'])
+parse.parse()
