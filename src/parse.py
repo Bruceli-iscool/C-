@@ -38,7 +38,7 @@ class Parser:
                                 self.advance()  
                                 statement = self.statement()
                                 if self.currentToken == "}":
-                                    return (function_name, statement)
+                                    return [(function_name, statement)]
                                 # error handling
                                 else:
                                     print("C-: SyntaxError: Expected closing '}'")
@@ -73,5 +73,3 @@ class Parser:
         else:
             print("C-:SyntaxError: Expected value")
 
-parse = Parser(['int', 'sum', '(', 'void', ')', '{', 'return', '10', ';', '}'])
-parse.parse()

@@ -21,7 +21,3 @@ class Lexer:
     def get_next_token(self):
         self.advance()
         return self.current_token
-text = "int sum() { return 10; }"
-lexer = Lexer(text)
-tokens = lexer.tokens
-print(tokens)

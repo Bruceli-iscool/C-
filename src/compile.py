@@ -7,9 +7,10 @@ class CodeGenerator:
         self.generated_code = ""
 
     def generate(self):
+            # check for processor
             if platform.processor() == 'i386':
                 return self.generate_x64()
-            elif platform.processor() == 'arm64':
+            elif platform.processor() == 'arm':
                 return self.generate_arm()
 
 
