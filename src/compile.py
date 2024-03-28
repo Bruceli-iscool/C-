@@ -1,5 +1,6 @@
 import platform
 
+# generate assembly
 class CodeGenerator:
     def __init__(self, parse_result):
         self.parse_result = parse_result
@@ -7,10 +8,8 @@ class CodeGenerator:
         self.architecture = platform.architecture()[0]
 
     def generate(self):
-        if self.architecture == 'x64':
             return self.generate_x64()
-        else:
-            return self.generate_arm()
+
 
 
     def generate_arm(self):
