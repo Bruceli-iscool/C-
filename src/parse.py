@@ -23,22 +23,22 @@ class Parser:
     
     # Handle fucntions (for now the main function)
     def function(self):
-        if self.currentToken == "int":
-            self.advance()  
-            if self.currentToken.isidentifier():
-                function_name = self.currentToken
-                self.advance()  
-                if self.currentToken == "(":
-                    self.advance()  
-                    if self.currentToken == "void":
-                        self.advance() 
-                        if self.currentToken == ")":
-                            self.advance() 
-                            if self.currentToken == "{":
-                                self.advance()  
+        if self.currentToken[0] == "INT":
+            self.advance()  # consume "int"
+            if self.currentToken[0] == "IDENTIFIER":
+                function_name = self.currentToken[1]
+                self.advance()  # consume identifier
+                if self.currentToken[0] == "LPAREN":
+                    self.advance()  # consume "("
+                    if self.currentToken[0] == "VOID":
+                        self.advance()  # consume "void"
+                        if self.currentToken[0] == "RPAREN":
+                            self.advance()  # consume ")"
+                            if self.currentToken[0] == "LCURLY":
+                                self.advance()  # consume "{"
                                 statement = self.statement()
-                                if self.currentToken == "}":
-                                    return [(function_name, statement)]
+                                if self.currentToken[0] == "RCURLY":
+                                    return (function_name, statement)
                                 # error handling
                                 else:
                                     print("C-: SyntaxError: Expected closing '}'")
@@ -56,17 +56,17 @@ class Parser:
         else:
             print("C-: SyntaxError: Expected 'int'")
     def statement(self):
-        if self.currentToken == "return":
+        if self.currentToken[0] == "RETURN":
             self.advance()
             expression = self.exp()
-            if self.currentToken == ";":
+            if self.currentToken == "SEMICOLON":
                 self.advance()
                 return expression
             else:
                 print("C-: SyntaxError: Expected ';'")
 
     def exp(self):
-        if self.currentToken.isdigit():
+        if self.currentToken[0] == "CONSTANT":
             exp_value = int(self.currentToken)
             self.advance() 
             return exp_value

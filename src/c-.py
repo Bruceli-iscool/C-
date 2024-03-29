@@ -16,3 +16,4 @@ def compile(file, out):
         generator = CodeGenerator(result)
         generated_code = generator.generate()
         print(generated_code)
+compile("/Users/keli/Documents/GitHub/gh/C-/.tests/return_2.c", 234)

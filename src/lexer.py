@@ -1,23 +1,38 @@
 import re
 
+# Define token types using regular expressions
+TOKEN_TYPES = [
+    ('INT', r'int'),
+    ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),
+    ('LPAREN', r'\('),
+    ('RPAREN', r'\)'),
+    ('VOID', r'void'),
+    ('LCURLY', r'\{'),
+    ('RCURLY', r'\}'),
+    ('RETURN', r'return'),
+    ('SEMICOLON', r';'),
+    ('CONSTANT', r'\d+')
+]
+
 class Lexer:
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, source_code):
+        self.source_code = source_code
+        self.position = 0
         self.tokens = []
-        self.current_token = None
-        self.token_index = -1
-        self.tokenize()
 
-    def tokenize(self):
-        self.tokens = re.findall(r'\bint\b|\bvoid\b|\breturn\b|\b\d+\b|\w+|[()\{\};]', self.text)
+    def lex(self):
+        while self.position < len(self.source_code):
+            match = None
+            for token_type in TOKEN_TYPES:
+                pattern = token_type[1]
+                regex = re.compile(pattern)
+                match = regex.match(self.source_code, self.position)
+                if match:
+                    value = match.group(0)
+                    self.tokens.append((token_type[0], value))
+                    self.position = match.end()
+                    break
+            if not match:
+                raise SyntaxError(f"Invalid token: {self.source_code[self.position]}")
+        return ([self.tokens])
 
-    def advance(self):
-        self.token_index += 1
-        if self.token_index < len(self.tokens):
-            self.current_token = self.tokens[self.token_index]
-        else:
-            self.current_token = None
-
-    def get_next_token(self):
-        self.advance()
-        return self.current_token
