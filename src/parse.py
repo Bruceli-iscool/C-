@@ -24,31 +24,30 @@ class Parser:
     # Handle fucntions (for now the main function)
     def function(self):
         if self.currentToken[0] == "INT":
-            self.advance()  # consume "int"
+            self.advance()  
             if self.currentToken[0] == "IDENTIFIER":
                 function_name = self.currentToken[1]
-                self.advance()  # consume identifier
-                if self.currentToken[0] == "LPAREN":
-                    self.advance()  # consume "("
+                self.advance()  
+                if self.currentToken[0] == "OPEN_PAREN":
+                    self.advance()  
                     if self.currentToken[0] == "VOID":
-                        self.advance()  # consume "void"
-                        if self.currentToken[0] == "RPAREN":
-                            self.advance()  # consume ")"
-                            if self.currentToken[0] == "LCURLY":
-                                self.advance()  # consume "{"
-                                statement = self.statement()
-                                if self.currentToken[0] == "RCURLY":
-                                    return (function_name, statement)
-                                # error handling
+                        self.advance()  # skip void
+                        if self.currentToken[0] == "CLOSED_PAREN":
+                                self.advance()  
+                                if self.currentToken[0] == "OPEN_BRACE":
+                                    self.advance()  
+                                    statement = self.statement()
+                                    if self.currentToken[0] == "CLOSED_BRACE":
+                                        return [(function_name, statement)]
+                                    # error handling
+                                    else:
+                                        print("C-: SyntaxError: Expected closing '}'")
                                 else:
-                                    print("C-: SyntaxError: Expected closing '}'")
-                            else:
-                                print("C-: SyntaxError: Expected '{'")
+                                    print("C-: SyntaxError: Expected '{'")
                         else:
                             print("C-: SyntaxError: Expected closing ')'")
-                    # skip void
-                    else:
-                        self.advance()
+                    
+
                 else:
                     print("C-: SyntaxError: Expected '('")
             else:
@@ -59,7 +58,7 @@ class Parser:
         if self.currentToken[0] == "RETURN":
             self.advance()
             expression = self.exp()
-            if self.currentToken == "SEMICOLON":
+            if self.currentToken[0] == "SEMICOLON":
                 self.advance()
                 return expression
             else:
@@ -67,7 +66,7 @@ class Parser:
 
     def exp(self):
         if self.currentToken[0] == "CONSTANT":
-            exp_value = int(self.currentToken)
+            exp_value = int(self.currentToken[1])
             self.advance() 
             return exp_value
         else:

@@ -1,4 +1,4 @@
-from lexer import Lexer
+from lexer import *
 from parse import Parser
 from compile import CodeGenerator
 
@@ -9,11 +9,10 @@ def compile(file, out):
         for line in files:
             rawInput = rawInput+line
         lexer = Lexer(rawInput)
-        tokens = lexer.tokens
+        token = lexer.lex()
+        tokens = list(token)
         parse = Parser(tokens)
         result = parse.parse()
-        print(result)
         generator = CodeGenerator(result)
         generated_code = generator.generate()
         print(generated_code)
-compile("/Users/keli/Documents/GitHub/gh/C-/.tests/return_2.c", 234)

@@ -12,6 +12,8 @@ class CodeGenerator:
                 return self.generate_x64()
             elif platform.processor() == 'arm':
                 return self.generate_arm()
+            else:
+                pass
 
 
 
