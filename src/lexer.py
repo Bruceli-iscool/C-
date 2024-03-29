@@ -2,6 +2,9 @@ import re
 
 # Define token types using regular expressions
 TOKEN_TYPES = [
+    ('DOUBLE_HYPEN', r'--'),
+    ('TILDE', r'~'),
+    ('HYPEN', r'-'),
     ('INT', r'int\b'),
     ('VOID', r'void\b'),
     ('RETURN', r'return\b'),
