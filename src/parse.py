@@ -21,7 +21,7 @@ class Parser:
     def program(self):
         return self.function()
     
-    # Handle fucntions (for now the main function)
+    # Handle functions (for now the main function)
     def function(self):
         if self.currentToken[0] == "INT":
             self.advance()  

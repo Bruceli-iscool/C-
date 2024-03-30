@@ -1,5 +1,5 @@
 import platform
-
+from parse import *
 # generate assembly
 class CodeGenerator:
     def __init__(self, parse_result):
@@ -44,4 +44,3 @@ class CodeGenerator:
             return f"	pushq	%rbp\nmovq	%rsp, %rbp\nmovl ${statement}, %eax\npopq	%rbp\nretq"
         else:
             return ""
-
