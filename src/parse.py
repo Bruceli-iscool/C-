@@ -69,6 +69,35 @@ class Parser:
             exp_value = int(self.currentToken[1])
             self.advance() 
             return exp_value
+        elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
+            operator = self.currentToken[0]
+            self.advance()
+            operand = self.exp()
+            return (operator, operand)
+        elif self.currentToken[0] == "OPEN_PAREN":
+            self.advance()
+            expression = self.exp()
+            if self.currentToken[0] == "CLOSED_PAREN":
+                self.advance()
+                return expression
+            else:
+                print("C-: SyntaxError: Expected ')'")
         else:
             print("C-:SyntaxError: Expected value")
+tokens = [
+    ("INT", "int"),
+    ("IDENTIFIER", "main"),
+    ("OPEN_PAREN", "("),
+    ("VOID", "void"),
+    ("CLOSED_PAREN", ")"),
+    ("OPEN_BRACE", "{"),
+    ("RETURN", "return"),
+    ("HYPEN", "-"),
+    ("CONSTANT", "5"),
+    ("SEMICOLON", ";"),
+    ("CLOSED_BRACE", "}"),
+]
 
+parser = Parser(tokens)
+result = parser.parse()
+print(result)
