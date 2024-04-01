@@ -4,6 +4,9 @@ import re
 TOKEN_TYPES = [
     ('DOUBLE_HYPEN', r'--'),
     ('TILDE', r'~'),
+    ('ADD', r'+'),
+    ('TIMES', r'*'),
+    ('DIVIDE', r'/'),
     ('HYPEN', r'-'),
     ('INT', r'int\b'),
     ('VOID', r'void\b'),

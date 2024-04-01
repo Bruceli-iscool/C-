@@ -70,10 +70,12 @@ class Parser:
             self.advance() 
             return exp_value
         elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
-            operator = self.currentToken[0]
+            operator = self.currentToken[1]
             self.advance()
             operand = self.exp()
-            return (operator, operand)
+            num = str(operator) + str(operand)
+            num = eval(num)
+            return num
         elif self.currentToken[0] == "OPEN_PAREN":
             self.advance()
             expression = self.exp()
