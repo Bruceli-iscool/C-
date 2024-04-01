@@ -47,3 +47,5 @@ class CodeGenerator:
             return f"	pushq	%rbp\nmovq	%rsp, %rbp\nmovl ${statement}, %eax\npopq	%rbp\nretq"
         else:
             return ""
+compiler = CodeGenerator([('main', ('~', '-5'))])
+compiler.generate()

@@ -70,12 +70,21 @@ class Parser:
             self.advance() 
             return exp_value
         elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
-            operator = self.currentToken[1]
+            self.operator = self.currentToken[1]
             self.advance()
-            operand = self.exp()
-            num = str(operator) + str(operand)
-            num = eval(num)
-            return num
+            if self.currentToken[0] == "OPEN_PAREN":
+                self.advance()
+                statement =  eval(str(self.operator) + str(self.exp()))
+                if self.currentToken[0] == "CLOSED_PAREN":
+                    self.advance()
+                    return statement
+                else:
+                    print("C-: SyntaxError: Expected ')'")
+            else:
+                operand = self.exp()
+                num = str(self.operator) + str(operand)
+                num = eval(num)
+                return num
         elif self.currentToken[0] == "OPEN_PAREN":
             self.advance()
             expression = self.exp()
@@ -94,8 +103,11 @@ tokens = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
+    ("TIDLE", "~"),
+    ("OPEN_PAREN", "("),
     ("HYPEN", "-"),
-    ("CONSTANT", "5"),
+    ("CONSTANT", "2"),
+    ("CLOSED_PAREN", ")"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}"),
 ]
