@@ -67,9 +67,25 @@ class Parser:
     def exp(self):
         if self.currentToken[0] == "CONSTANT":
             exp_value = int(self.currentToken[1])
-            self.advance() 
+            self.advance()
+            if self.currentToken[0] in ["HYPEN", "ADD", "TIMES", "DIVIDE"]:
+                self.operator = self.currentToken[1]
+                self.advance()
+                if self.currentToken[0] == "OPEN_PAREN":
+                    self.advance()
+                    statement =  eval(str(self.operator) + str(self.exp()))
+                    if self.currentToken[0] == "CLOSED_PAREN":
+                        self.advance()
+                        return statement
+                    else:
+                        print("C-: SyntaxError: Expected ')'")
+                else:
+                    operand = self.exp()
+                    num = str(self.operator) + str(operand)
+                    num = eval(num)
+                    return num 
             return exp_value
-        elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
+        elif self.currentToken[0] in ["HYPEN", "TIDLE", "ADD", "TIMES", "DIVIDE"]:
             self.operator = self.currentToken[1]
             self.advance()
             if self.currentToken[0] == "OPEN_PAREN":
@@ -103,11 +119,9 @@ tokens = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
-    ("TIDLE", "~"),
-    ("OPEN_PAREN", "("),
-    ("HYPEN", "-"),
     ("CONSTANT", "2"),
-    ("CLOSED_PAREN", ")"),
+    ("ADD", "+"),
+    ("CONSTANT", "2"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}"),
 ]
