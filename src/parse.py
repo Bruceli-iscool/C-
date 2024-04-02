@@ -82,10 +82,11 @@ class Parser:
                 else:
                     operand = self.exp()
                     num = str(self.operator) + str(operand)
+                    print(num)
                     num = eval(num)
                     return num 
             return exp_value
-        elif self.currentToken[0] in ["HYPEN", "TIDLE", "ADD", "TIMES", "DIVIDE"]:
+        elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
             self.operator = self.currentToken[1]
             self.advance()
             if self.currentToken[0] == "OPEN_PAREN":
@@ -119,8 +120,6 @@ tokens = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
-    ("CONSTANT", "2"),
-    ("ADD", "+"),
     ("CONSTANT", "2"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}"),
