@@ -19,6 +19,4 @@ def compile(file, out):
         generated_code = generator.generate()
         print(generated_code)
         sys.exit()
-
-compile("/Users/lq/Documents/GitHub/C-/.tests/unary.c", "unary.asm")
     
