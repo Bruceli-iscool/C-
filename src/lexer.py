@@ -3,7 +3,7 @@ import re
 # Define token types using regular expressions
 TOKEN_TYPES = [
     ('DOUBLE_HYPEN', r'--'),
-    ('TILDE', r'~'),
+    ('TIDLE', r'~'),
     ('ADD', r'\+'),
     ('TIMES', r'\*'),
     ('DIVIDE', r'/'),
