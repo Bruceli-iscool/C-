@@ -73,7 +73,8 @@ class Parser:
                 self.advance()
                 if self.currentToken[0] == "OPEN_PAREN":
                     self.advance()
-                    statement =  eval(str(self.operator) + str(self.exp()))
+                    statement = eval(str(self.exp()) + str(self.operator))
+                    print(statement)
                     if self.currentToken[0] == "CLOSED_PAREN":
                         self.advance()
                         return statement
@@ -81,7 +82,7 @@ class Parser:
                         print("C-: SyntaxError: Expected ')'")
                 else:
                     operand = self.exp()
-                    num = str(self.operator) + str(operand)
+                    num = str(operand) + str(self.operator)
                     print(num)
                     num = eval(num)
                     return num 
@@ -120,6 +121,8 @@ tokens = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
+    ("CONSTANT", "2"),
+    ("ADD", "+"),
     ("CONSTANT", "2"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}"),
