@@ -110,7 +110,7 @@ class Parser:
             operator = self.currentToken[0]
             self.advance()
             right = self.factor()
-            if operator == "MULTIPLY":
+            if operator == "TIMES":
                 left *= right
             elif operator == "DIVIDE":
                 left /= right
@@ -143,7 +143,7 @@ tokens2 = [
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
     ("CONSTANT", "5"),
-    ("MINUS", "-"),
+    ("TIMES", "*"),
     ("CONSTANT", "3"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}")
