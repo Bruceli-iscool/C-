@@ -72,7 +72,10 @@ class Parser:
                     operator = self.currentToken[1]
                     self.advance()
                     operand = exp_value
-                    equation = eval(str(operand) + str(operator) + str(self.exp()))
+                    try:
+                        equation = eval(str(operand) + str(operator) + str(self.exp()))
+                    except ZeroDivisionError:
+                        print("C-: DivisionError: Cannot divide by 0.")
                     return equation
             else:
                 return exp_value
@@ -116,11 +119,11 @@ tokens2 = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
-    ("CONSTANT", "5"),
+    ("CONSTANT", "4"),
     ("ADD", "+"),
     ("CONSTANT", "3"),
-    ("TIMES", "*"),
-    ("CONSTANT", "5"),
+    ("DIVIDE", "/"),
+    ("CONSTANT", "3"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}")
 ]
