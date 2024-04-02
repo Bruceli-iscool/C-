@@ -71,9 +71,8 @@ class Parser:
             if self.currentToken[0] in ["ADD", "HYPEN", "TIMES", "DIVIDE"]:
                     operator = self.currentToken[1]
                     self.advance()
-                    operand = self.currentToken[1]
-                    self.advance
-                    equation = eval(str(operand) + str(operator) + str(self.exp())) 
+                    operand = exp_value
+                    equation = eval(str(operand) + str(operator) + str(self.exp()))
                     return equation
             else:
                 return exp_value
@@ -103,7 +102,7 @@ class Parser:
             else:
                 print("C-: SyntaxError: Expected ')'")
         else:
-                return self.term() 
+            print("C-: Expected value.")
 
 #tokens = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 'void'), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('TIDLE', '~'), ('OPEN_PAREN', '('), ('HYPEN', '-'), ('CONSTANT', '2'), ('CLOSED_PAREN', ')'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
 
@@ -120,6 +119,8 @@ tokens2 = [
     ("CONSTANT", "5"),
     ("ADD", "+"),
     ("CONSTANT", "3"),
+    ("TIMES", "*"),
+    ("CONSTANT", "5"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}")
 ]
