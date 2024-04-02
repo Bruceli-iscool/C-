@@ -65,11 +65,11 @@ class Parser:
                 print("C-: SyntaxError: Expected ';'")
 
     def exp(self):
-        if self.currentToken[0] == "CONSTANT":
+        """if self.currentToken[0] == "CONSTANT":
             exp_value = int(self.currentToken[1])
             self.advance()
-            return exp_value
-        elif self.currentToken[0] in ["ADD", "SUBTRACT"]:
+            return exp_value"""
+        if self.currentToken[0] in ["ADD", "SUBTRACT"]:
                 operator = self.currentToken[0]
                 self.advance()
                 operand = self.factor()
@@ -134,7 +134,7 @@ tokens = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 
 
 # test code
 parser = Parser(tokens);result = parser.parse();print(result)
-tokens = [
+tokens2 = [
     ("INT", "int"),
     ("IDENTIFIER", "main"),
     ("OPEN_PAREN", "("),
@@ -142,13 +142,13 @@ tokens = [
     ("CLOSED_PAREN", ")"),
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
-    ("CONSTANT", "5"),
-    ("ADD", "+"),
+    #("CONSTANT", "5"),
+    #("ADD", "+"),
     ("CONSTANT", "3"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}")
 ]
 
-#parser = Parser(tokens)
-#result = parser.parse()
-#print(result) 
+parser = Parser(tokens2)
+result = parser.parse()
+print(result) 
