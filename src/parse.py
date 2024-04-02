@@ -84,6 +84,7 @@ class Parser:
                     num = str(operand) + str(self.operator)
                     num = eval(num)
                     return num 
+            
             return exp_value
         elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
             self.operator = self.currentToken[1]
@@ -111,20 +112,7 @@ class Parser:
                 print("C-: SyntaxError: Expected ')'")
         else:
             print("C-:SyntaxError: Expected value")
-tokens = [
-    ("INT", "int"),
-    ("IDENTIFIER", "main"),
-    ("OPEN_PAREN", "("),
-    ("VOID", "void"),
-    ("CLOSED_PAREN", ")"),
-    ("OPEN_BRACE", "{"),
-    ("RETURN", "return"),
-    ("CONSTANT", "2"),
-    ("SEMICOLON", ";"),
-    ("CLOSED_BRACE", "}"),
-]
+tokens = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 'void'), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('TILDE', '~'), ('OPEN_PAREN', '('), ('HYPEN', '-'), ('CONSTANT', '2'), ('CLOSED_PAREN', ')'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
 
 # test code
-# parser = Parser(tokens)
-# result = parser.parse()
-# print(result)
+parser = Parser(tokens);result = parser.parse();print(result)

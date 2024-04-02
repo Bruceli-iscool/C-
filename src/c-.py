@@ -12,6 +12,7 @@ def compile(file, out):
         lexer = Lexer(rawInput)
         token = lexer.lex()
         tokens = list(token)
+        print(tokens)
         parse = Parser(tokens)
         result = parse.parse()
         generator = CodeGenerator(result)
