@@ -4,13 +4,14 @@ import re
 TOKEN_TYPES = [
     ('DOUBLE_HYPEN', r'--'),
     ('TILDE', r'~'),
-    ('ADD', r'+'),
-    ('TIMES', r'*'),
+    ('ADD', r'\+'),
+    ('TIMES', r'\*'),
     ('DIVIDE', r'/'),
     ('HYPEN', r'-'),
-    ('INT', r'int\b'),
-    ('VOID', r'void\b'),
-    ('RETURN', r'return\b'),
+    ('INT', r'\bint\b(?![a-zA-Z0-9_])'),
+    ('VOID', r'\bvoid\b(?![a-zA-Z0-9_])'),
+    ('RETURN', r'\breturn\b(?![a-zA-Z0-9_])'),
+    ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),
     ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),
     ('OPEN_PAREN', r'\('),
     ('CLOSED_PAREN', r'\)'),
@@ -46,6 +47,3 @@ class Lexer:
                 else:
                     print(f"C-:Invalid token: {self.source_code[self.position]}")
                     break
-lex = Lexer("int main(void) {return 5;}")
-result = lex.lex()
-print(list(result))
