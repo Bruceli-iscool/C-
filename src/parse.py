@@ -68,24 +68,16 @@ class Parser:
         if self.currentToken[0] == "CONSTANT":
             exp_value = int(self.currentToken[1])
             self.advance()
-            if self.currentToken[0] in ["HYPEN", "ADD", "TIMES", "DIVIDE"]:
-                self.operator = self.currentToken[1]
-                self.advance()
-                if self.currentToken[0] == "OPEN_PAREN":
-                    self.advance()
-                    statement = eval(str(self.exp()) + str(self.operator))
-                    if self.currentToken[0] == "CLOSED_PAREN":
-                        self.advance()
-                        return statement
-                    else:
-                        print("C-: SyntaxError: Expected ')'")
-                else:
-                    operand = self.exp()
-                    num = str(operand) + str(self.operator)
-                    num = eval(num)
-                    return num 
-            
             return exp_value
+        elif self.currentToken[0] in ["ADD", "SUBTRACT"]:
+                operator = self.currentToken[0]
+                self.advance()
+                operand = self.factor()
+                if operator == "SUBTRACT":
+                    return -operand
+                else:
+                    return operand
+            
         elif self.currentToken[0] in ["HYPEN", "TIDLE"]:
             self.operator = self.currentToken[1]
             self.advance()
@@ -111,8 +103,52 @@ class Parser:
             else:
                 print("C-: SyntaxError: Expected ')'")
         else:
-            print("C-:SyntaxError: Expected value")
-#tokens = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 'void'), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('TIDLE', '~'), ('OPEN_PAREN', '('), ('HYPEN', '-'), ('CONSTANT', '2'), ('CLOSED_PAREN', ')'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
+                return self.term() 
+    def term(self):
+        left = self.factor()
+        while self.currentToken[0] in ["MULTIPLY", "DIVIDE"]:
+            operator = self.currentToken[0]
+            self.advance()
+            right = self.factor()
+            if operator == "MULTIPLY":
+                left *= right
+            elif operator == "DIVIDE":
+                left /= right
+        return left
+
+    def factor(self):
+        if self.currentToken[0] == "CONSTANT":
+            value = int(self.currentToken[1])
+            self.advance()
+            return value
+        elif self.currentToken[0] == "OPEN_PAREN":
+            self.advance()
+            result = self.exp()
+            if self.currentToken[0] != "CLOSE_PAREN":
+                print("Expected ')'")
+            self.advance()
+            return result
+        else:
+            print(f"Unexpected token: {self.currentToken}")
+tokens = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 'void'), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('TIDLE', '~'), ('OPEN_PAREN', '('), ('HYPEN', '-'), ('CONSTANT', '2'), ('CLOSED_PAREN', ')'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
 
 # test code
-#parser = Parser(tokens);result = parser.parse();print(result)
+parser = Parser(tokens);result = parser.parse();print(result)
+tokens = [
+    ("INT", "int"),
+    ("IDENTIFIER", "main"),
+    ("OPEN_PAREN", "("),
+    ("VOID", "void"),
+    ("CLOSED_PAREN", ")"),
+    ("OPEN_BRACE", "{"),
+    ("RETURN", "return"),
+    ("CONSTANT", "5"),
+    ("ADD", "+"),
+    ("CONSTANT", "3"),
+    ("SEMICOLON", ";"),
+    ("CLOSED_BRACE", "}")
+]
+
+#parser = Parser(tokens)
+#result = parser.parse()
+#print(result) 
