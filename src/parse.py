@@ -74,7 +74,6 @@ class Parser:
                 if self.currentToken[0] == "OPEN_PAREN":
                     self.advance()
                     statement = eval(str(self.exp()) + str(self.operator))
-                    print(statement)
                     if self.currentToken[0] == "CLOSED_PAREN":
                         self.advance()
                         return statement
@@ -83,7 +82,6 @@ class Parser:
                 else:
                     operand = self.exp()
                     num = str(operand) + str(self.operator)
-                    print(num)
                     num = eval(num)
                     return num 
             return exp_value
@@ -122,12 +120,11 @@ tokens = [
     ("OPEN_BRACE", "{"),
     ("RETURN", "return"),
     ("CONSTANT", "2"),
-    ("ADD", "+"),
-    ("CONSTANT", "2"),
     ("SEMICOLON", ";"),
     ("CLOSED_BRACE", "}"),
 ]
 
-parser = Parser(tokens)
-result = parser.parse()
-print(result)
+# test code
+# parser = Parser(tokens)
+# result = parser.parse()
+# print(result)

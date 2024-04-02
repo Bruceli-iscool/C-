@@ -46,3 +46,6 @@ class Lexer:
                 else:
                     print(f"C-:Invalid token: {self.source_code[self.position]}")
                     break
+lex = Lexer("int main(void) {return 5;}")
+result = lex.lex()
+print(list(result))

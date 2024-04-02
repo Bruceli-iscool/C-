@@ -1,3 +1,4 @@
+import sys
 from lexer import *
 from parse import Parser
 from compile import CodeGenerator
@@ -16,3 +17,7 @@ def compile(file, out):
         generator = CodeGenerator(result)
         generated_code = generator.generate()
         print(generated_code)
+        sys.exit()
+
+compile("/Users/lq/Documents/GitHub/C-/.tests/unary.c", "unary.asm")
+    
