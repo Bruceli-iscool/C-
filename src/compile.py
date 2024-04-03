@@ -45,5 +45,9 @@ class CodeGenerator:
     def generate_statement_x64(self, statement):
         if isinstance(statement, int):
             return f"	pushq	%rbp\nmovq	%rsp, %rbp\nmovl ${statement}, %eax\npopq	%rbp\nretq"
+        elif isinstance(statement, str):
+            operator = statement[1]
+            if operator == "+":
+                return f"movl ${statement[0]}, %eax\nmovl ax, ${statement[2]}\nadd %eax, ax "
         else:
             return ""

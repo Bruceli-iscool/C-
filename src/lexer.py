@@ -56,7 +56,3 @@ class Lexer:
                     else:
                         print(f"C-:Invalid token: {self.source_code[self.position]}")
                         sys.exit()
-lex = Lexer("int main() {return 5}")
-tokens = lex.lex()
-tokens = list(tokens)
-print(tokens)

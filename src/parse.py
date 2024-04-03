@@ -131,4 +131,4 @@ tokens2 = [
     ("CLOSED_BRACE", "}")
 ]
 
-parser = Parser(tokens2);result = parser.parse();print(result)
+#parser = Parser(tokens2);result = parser.parse();print(result)
