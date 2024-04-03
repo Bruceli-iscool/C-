@@ -3,6 +3,7 @@ import re
 # Define token types using regular expressions
 TOKEN_TYPES = [
     ('DOUBLE_HYPEN', r'--'),
+    ('CONSTANT', r'\d+'),
     ('TIDLE', r'~'),
     ('ADD', r'\+'),
     ('TIMES', r'\*'),
@@ -18,7 +19,6 @@ TOKEN_TYPES = [
     ('OPEN_BRACE', r'\{'),
     ('CLOSED_BRACE', r'\}'),
     ('SEMICOLON', r';'),
-    ('CONSTANT', r'\d+')
 ]
 
 
@@ -47,3 +47,7 @@ class Lexer:
                 else:
                     print(f"C-:Invalid token: {self.source_code[self.position]}")
                     break
+lex = Lexer("int main(void) {return -1}")
+tokens = lex.lex()
+tokens = list(tokens)
+print(tokens)
