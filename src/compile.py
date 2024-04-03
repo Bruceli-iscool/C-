@@ -1,53 +1,72 @@
 import platform
 from parse import *
 # generate assembly
+import platform
+
 class CodeGenerator:
     def __init__(self, parse_result):
         self.parse_result = parse_result
         self.generated_code = ""
 
     def generate(self):
-            # check for processor
-            if platform.processor() == 'i386':
-                return self.generate_x64()
-            elif platform.processor() == 'arm':
-                return self.generate_arm()
-            else:
-                pass
-
-
+        # Check for processor architecture
+        if platform.processor() == 'arm':
+            return self.generate_arm()
+        else:
+            return self.generate_x64()
 
     def generate_arm(self):
         self.generated_code += ".text\n"
-        for self.function_name, statement in self.parse_result:
-            self.generated_code += f".globl _{self.self.function_name}\n"
-            self.generated_code += f"_{self.self.function_name}:\n"
-            if '-' in statement:
-                self.generated_code += self.generate_statement_arm(statement, '-')
-            else:
-                self.generated_code += self.generate_statement_arm(statement)
+        for function_name, statement in self.parse_result:
+            self.generated_code += f".globl _{function_name}\n"
+            self.generated_code += f"_{function_name}:\n"
+            if isinstance(statement, int):
+                self.generated_code += f"mov w0, #{statement}\nret\n"
         return self.generated_code
 
     def generate_x64(self):
         self.generated_code += ".text\n"
-        for self.function_name, statement in self.parse_result:
-            self.generated_code += f".globl _{self.function_name}\n"
-            self.generated_code += f"_{self.function_name}:\n"
-            self.generated_code += self.generate_statement_x64(statement)
+        for function_name, expression in self.parse_result:
+            self.generated_code += f".globl _{function_name}\n"
+            self.generated_code += f"_{function_name}:\n"
+            # Assuming that we have only simple arithmetic expressions for now
+            # We'll generate code for evaluating the expression
+            self.generated_code += "  movq $0, %rax\n"
+            terms = expression.split()
+            for term in terms:
+                if term.isdigit():
+                    self.generated_code += f"  pushq ${term}\n"
+                elif term == '+':
+                    self.generated_code += "  popq %rbx\n"
+                    self.generated_code += "  popq %rax\n"
+                    self.generated_code += "  addq %rbx, %rax\n"
+                    self.generated_code += "  pushq %rax\n"
+                elif term == '-':
+                    self.generated_code += "  popq %rbx\n"
+                    self.generated_code += "  popq %rax\n"
+                    self.generated_code += "  subq %rbx, %rax\n"
+                    self.generated_code += "  pushq %rax\n"
+                elif term == '*':
+                    self.generated_code += "  popq %rbx\n"
+                    self.generated_code += "  popq %rax\n"
+                    self.generated_code += "  imulq %rbx, %rax\n"
+                    self.generated_code += "  pushq %rax\n"
+                elif term == '/':
+                    self.generated_code += "  popq %rbx\n"
+                    self.generated_code += "  popq %rax\n"
+                    self.generated_code += "  cqo\n"
+                    self.generated_code += "  idivq %rbx\n"
+                    self.generated_code += "  pushq %rax\n"
+            self.generated_code += "  popq %rax\n"
+            self.generated_code += "  retq\n"
         return self.generated_code
 
-    def generate_statement_arm(self, statement):
-        if isinstance(statement, int):
-            return f"    	.cfi_startproc\n; %bb.0:\nmov	w0, #{statement}\nret\n.cfi_endproc"
-        else:
-            return ""
+# Example AST
+ast = [('main', '1 + 2 * 3 - 4 / 2')]
 
-    def generate_statement_x64(self, statement):
-        if isinstance(statement, int):
-            return f"	pushq	%rbp\nmovq	%rsp, %rbp\nmovl ${statement}, %eax\npopq	%rbp\nretq"
-        elif isinstance(statement, str):
-            operator = statement[1]
-            if operator == "+":
-                return f"movl ${statement[0]}, %eax\nmovl ax, ${statement[2]}\nadd %eax, ax "
-        else:
-            return ""
+# Create code generator instance
+generator = CodeGenerator(ast)
+
+# Generate assembly code
+assembly_code = generator.generate()
+print(assembly_code)
