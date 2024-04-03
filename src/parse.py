@@ -73,7 +73,7 @@ class Parser:
                     self.advance()
                     operand = exp_value
                     try:
-                        equation = str(operand) + str(operator) + str(self.exp())
+                        equation = eval(str(operand) + str(operator) + str(self.exp()))
                     except ZeroDivisionError:
                         print("C-: DivisionError: Cannot divide by 0.")
                     return equation
