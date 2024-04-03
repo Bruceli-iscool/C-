@@ -1,4 +1,5 @@
 import re
+import sys
 
 # Define token types using regular expressions
 TOKEN_TYPES = [
@@ -10,13 +11,13 @@ TOKEN_TYPES = [
     ('DIVIDE', r'/'),
     ('HYPEN', r'-'),
     ('AND', r'\&&'),
-    #('OR', r'||'),
-    #('EQUAL', r'\=='),
-    #('NOT EQUAL', r'\!='),
-    #("LESS THAN", r'\<'),
-    #("LESS THAN OR EQUAL", r'\<='),
-    #("GREATER THAN", r'\>'),
-    #("GREATER THAN OR EQUAL", r'\>='),"""
+    ('OR', r'\|\|'),
+    ('EQUAL', r'\=='),
+    ('NOT EQUAL', r'\!='),
+    ("LESS THAN", r'\<'),
+    ("LESS THAN OR EQUAL", r'\<='),
+    ("GREATER THAN", r'\>'),
+    ("GREATER THAN OR EQUAL", r'\>='),
     ('INT', r'\bint\b(?![a-zA-Z0-9_])'),
     ('VOID', r'\bvoid\b(?![a-zA-Z0-9_])'),
     ('RETURN', r'\breturn\b(?![a-zA-Z0-9_])'),
@@ -26,7 +27,7 @@ TOKEN_TYPES = [
     ('CLOSED_PAREN', r'\)'),
     ('OPEN_BRACE', r'\{'),
     ('CLOSED_BRACE', r'\}'),
-    ('SEMICOLON', r';'),
+    ('SEMICOLON', r';')
 ]
 
 
@@ -48,14 +49,14 @@ class Lexer:
                     self.position = match.end()
                     break
             if not match:
-                # Skip whitespace characters
-                if self.source_code[self.position].isspace():
-                    self.position += 1
-                    continue
-                else:
-                    print(f"C-:Invalid token: {self.source_code[self.position]}")
-                    break
-lex = Lexer("int main(void) {return -1}")
+                    # Skip whitespace characters
+                    if self.source_code[self.position].isspace():
+                        self.position += 1
+                        continue
+                    else:
+                        print(f"C-:Invalid token: {self.source_code[self.position]}")
+                        sys.exit()
+lex = Lexer("int main() {return 5}")
 tokens = lex.lex()
 tokens = list(tokens)
 print(tokens)
