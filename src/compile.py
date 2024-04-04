@@ -68,6 +68,16 @@ class CodeGenerator:
                             break
                     self.generated_code += f"  sub ${num}, %eax\n"
                     continue
+                elif current == '*':
+                    for value in expression:
+                        if value.isdigit():
+                            num += str(value)
+                            expression = expression.lstrip(value)
+                            continue
+                        else:
+                            break
+                    self.generated_code += f"  mul ${num}, %eax\n"
+                    continue
         self.generated_code += "  ret\n"
         return self.generated_code
             
