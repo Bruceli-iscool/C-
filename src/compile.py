@@ -1,5 +1,5 @@
 import platform
-from parse import *
+import re
 # generate assembly
 import platform
 
@@ -27,13 +27,27 @@ class CodeGenerator:
     def generate_x64(self):
         self.generated_code += ".text\n"
         for function_name, expression in self.parse_result:
-            self.generated_code += f".globl _{function_name}\n"
-            self.generated_code += f"_{function_name}:\n"
-            self.generated_code += "  movq $0, %eax\n"
-        
+            self.generated_code += f".globl {function_name}\n"
+            self.generated_code += f"{function_name}:\n"
+            self.generated_code += "  mov $0, %eax\n"
+            # Parse and generate assembly for the expression
+            terms = re.findall(r'\b\d+|\S\b', expression)
+            operator_mapping = {'+': 'add', '-': 'sub', '*': 'imul', '/': 'idiv'}
+            operator_stack = []
+            for term in terms:
+                if term.isdigit():
+                    self.generated_code += f"  mov ${term}, %ebx\n"
+                    if operator_stack:
+                        operator = operator_stack.pop()
+                        self.generated_code += f"  {operator_mapping[operator]} %ebx, %eax\n"
+                elif term in operator_mapping:
+                    operator_stack.append(term)
+            self.generated_code += "  ret\n"
+        return self.generated_code
+            
 
-# Example AST
-ast = [('main', '1 + 2 * 3 - 4 / 2')]
+
+ast = [('main', '1+2-5')]
 
 # Create code generator instance
 generator = CodeGenerator(ast)
