@@ -3,11 +3,12 @@ import re
 # generate assembly
 import platform
 
+
 class CodeGenerator:
     def __init__(self, parse_result):
         self.parse_result = parse_result
         self.generated_code = ""
-
+    
     def generate(self):
         # Check for processor architecture
         if platform.processor() == 'arm':
@@ -29,25 +30,49 @@ class CodeGenerator:
         for function_name, expression in self.parse_result:
             self.generated_code += f".globl {function_name}\n"
             self.generated_code += f"{function_name}:\n"
-            self.generated_code += "  mov $0, %eax\n"
+            num = '0'
+            expression = expression.replace(' ', '')
+            for value in expression:
+                if value.isdigit():
+                    num += str(value)
+                    expression = expression.lstrip(value)
+                    continue
+                else:
+                    break
+            num = int(num)
+            self.generated_code += f"  mov ${num}, %eax\n"
+            num = '0'
             # Parse and generate assembly for the expression
-            terms = re.findall(r'\b\d+|\S\b', expression)
-            operator_mapping = {'+': 'add', '-': 'sub', '*': 'imul', '/': 'idiv'}
-            operator_stack = []
-            for term in terms:
-                if term.isdigit():
-                    self.generated_code += f"  mov ${term}, %ebx\n"
-                    if operator_stack:
-                        operator = operator_stack.pop()
-                        self.generated_code += f"  {operator_mapping[operator]} %ebx, %eax\n"
-                elif term in operator_mapping:
-                    operator_stack.append(term)
-            self.generated_code += "  ret\n"
+            while len(expression) > 0:
+                current = expression[0]
+                expression = expression[1:]
+                if current == '+':
+                    for value in expression:
+                        if value.isdigit():
+                            num += str(value)
+                            expression = expression.lstrip(value)
+                            continue
+                        else:
+                            break
+
+                    self.generated_code += f"   addl ${int(num)}, %eax\n"
+                    num = ''
+                    continue
+                elif current == '-':
+                    for value in expression:
+                        if value.isdigit():
+                            num += str(value)
+                            expression = expression.lstrip(value)
+                            continue
+                        else:
+                            break
+                    self.generated_code += f"   sub ${num}, %eax\n"
+                    continue
         return self.generated_code
             
 
 
-ast = [('main', '1+2-5')]
+ast = [('main', '1234+2-5')]
 
 # Create code generator instance
 generator = CodeGenerator(ast)
