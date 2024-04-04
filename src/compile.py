@@ -29,37 +29,8 @@ class CodeGenerator:
         for function_name, expression in self.parse_result:
             self.generated_code += f".globl _{function_name}\n"
             self.generated_code += f"_{function_name}:\n"
-            # Assuming that we have only simple arithmetic expressions for now
-            # We'll generate code for evaluating the expression
-            self.generated_code += "  movq $0, %rax\n"
-            terms = expression.split()
-            for term in terms:
-                if term.isdigit():
-                    self.generated_code += f"  pushq ${term}\n"
-                elif term == '+':
-                    self.generated_code += "  popq %rbx\n"
-                    self.generated_code += "  popq %rax\n"
-                    self.generated_code += "  addq %rbx, %rax\n"
-                    self.generated_code += "  pushq %rax\n"
-                elif term == '-':
-                    self.generated_code += "  popq %rbx\n"
-                    self.generated_code += "  popq %rax\n"
-                    self.generated_code += "  subq %rbx, %rax\n"
-                    self.generated_code += "  pushq %rax\n"
-                elif term == '*':
-                    self.generated_code += "  popq %rbx\n"
-                    self.generated_code += "  popq %rax\n"
-                    self.generated_code += "  imulq %rbx, %rax\n"
-                    self.generated_code += "  pushq %rax\n"
-                elif term == '/':
-                    self.generated_code += "  popq %rbx\n"
-                    self.generated_code += "  popq %rax\n"
-                    self.generated_code += "  cqo\n"
-                    self.generated_code += "  idivq %rbx\n"
-                    self.generated_code += "  pushq %rax\n"
-            self.generated_code += "  popq %rax\n"
-            self.generated_code += "  retq\n"
-        return self.generated_code
+            self.generated_code += "  movq $0, %eax\n"
+        
 
 # Example AST
 ast = [('main', '1 + 2 * 3 - 4 / 2')]
