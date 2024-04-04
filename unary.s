@@ -1,10 +1,7 @@
 .text
-.globl main
-main:
-  mov $0, %eax
-  mov $1, %ebx
-  mov $2, %ebx
-  add %ebx, %eax
-  mov $5, %ebx
-  sub %ebx, %eax
+.globl _main
+_main:
+  mov $14, %eax
+  addl $2, %eax
+  sub $5, %eax
   ret

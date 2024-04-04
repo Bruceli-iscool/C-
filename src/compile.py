@@ -55,7 +55,7 @@ class CodeGenerator:
                         else:
                             break
 
-                    self.generated_code += f"   addl ${int(num)}, %eax\n"
+                    self.generated_code += f"  addl ${int(num)}, %eax\n"
                     num = ''
                     continue
                 elif current == '-':
@@ -66,13 +66,14 @@ class CodeGenerator:
                             continue
                         else:
                             break
-                    self.generated_code += f"   sub ${num}, %eax\n"
+                    self.generated_code += f"  sub ${num}, %eax\n"
                     continue
+        self.generated_code += "  ret\n"
         return self.generated_code
             
 
 
-ast = [('main', '1234+2-5')]
+ast = [('main', '14+2-5')]
 
 # Create code generator instance
 generator = CodeGenerator(ast)
