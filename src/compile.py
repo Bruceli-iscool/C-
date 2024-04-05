@@ -2,6 +2,7 @@ import platform
 import re
 # generate assembly
 import platform
+import time
 
 
 class CodeGenerator:
@@ -30,6 +31,7 @@ class CodeGenerator:
         for function_name, expression in self.parse_result:
             self.generated_code += f".globl {function_name}\n"
             self.generated_code += f"{function_name}:\n"
+            self.generated_code += f"  # compiled at {time.time()} by the C- compiler\n"
             num = '0'
             expression = expression.replace(' ', '')
             for value in expression:
@@ -40,7 +42,7 @@ class CodeGenerator:
                 else:
                     break
             num = int(num)
-            self.generated_code += f"  mov ${num}, %eax\n"
+            self.generated_code += f"  movl ${num}, %eax\n"
             num = '0'
             # Parse and generate assembly for the expression
             while len(expression) > 0:
@@ -66,7 +68,8 @@ class CodeGenerator:
                             continue
                         else:
                             break
-                    self.generated_code += f"  sub ${num}, %eax\n"
+                    self.generated_code += f"  subl ${int(num)}, %eax\n"
+                    num = ''
                     continue
                 elif current == '*':
                     for value in expression:
@@ -76,14 +79,25 @@ class CodeGenerator:
                             continue
                         else:
                             break
-                    self.generated_code += f"  mul ${num}, %eax\n"
+                    self.generated_code += f"  imull ${int(num)}, %eax\n"
+                    num = ''
                     continue
+                # handling division takes multiple lines
+                elif current == '/':
+                    for value in expression:
+                        if value.isdigit():
+                            num += str(value)
+                            expression = expression.lstrip(value)
+                            continue
+                        else:
+                            break
+                    self.generated_code += f"  movl ${int(num)}, -4(%rbp)\n  idiv -4(%rbp)\n"
         self.generated_code += "  ret\n"
         return self.generated_code
             
 
 
-ast = [('main', '14+2-5')]
+ast = [('main', '14/7')]
 
 # Create code generator instance
 generator = CodeGenerator(ast)
