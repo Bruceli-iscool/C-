@@ -1,18 +1,15 @@
-import platform
-import re
 # generate assembly
 import platform
-import time
 
 
 class CodeGenerator:
     def __init__(self, parse_result):
         self.parse_result = parse_result
         self.generated_code = ""
-    
+
     def generate(self):
         # Check for processor architecture
-        if platform.processor() == 'arm':
+        if platform.processor() == "arm":
             return self.generate_arm()
         else:
             return self.generate_x64()
@@ -31,9 +28,8 @@ class CodeGenerator:
         for function_name, expression in self.parse_result:
             self.generated_code += f".globl {function_name}\n"
             self.generated_code += f"{function_name}:\n"
-            self.generated_code += f"  # compiled at {time.time()} by the C- compiler\n"
-            num = '0'
-            expression = expression.replace(' ', '')
+            num = "0"
+            expression = expression.replace(" ", "")
             for value in expression:
                 if value.isdigit():
                     num += str(value)
@@ -43,12 +39,12 @@ class CodeGenerator:
                     break
             num = int(num)
             self.generated_code += f"  movl ${num}, %eax\n"
-            num = '0'
+            num = "0"
             # Parse and generate assembly for the expression
             while len(expression) > 0:
                 current = expression[0]
                 expression = expression[1:]
-                if current == '+':
+                if current == "+":
                     for value in expression:
                         if value.isdigit():
                             num += str(value)
@@ -58,9 +54,9 @@ class CodeGenerator:
                             break
 
                     self.generated_code += f"  addl ${int(num)}, %eax\n"
-                    num = ''
+                    num = ""
                     continue
-                elif current == '-':
+                elif current == "-":
                     for value in expression:
                         if value.isdigit():
                             num += str(value)
@@ -69,9 +65,9 @@ class CodeGenerator:
                         else:
                             break
                     self.generated_code += f"  subl ${int(num)}, %eax\n"
-                    num = ''
+                    num = ""
                     continue
-                elif current == '*':
+                elif current == "*":
                     for value in expression:
                         if value.isdigit():
                             num += str(value)
@@ -80,10 +76,10 @@ class CodeGenerator:
                         else:
                             break
                     self.generated_code += f"  imull ${int(num)}, %eax\n"
-                    num = ''
+                    num = ""
                     continue
                 # handling division takes multiple lines
-                elif current == '/':
+                elif current == "/":
                     for value in expression:
                         if value.isdigit():
                             num += str(value)
@@ -91,13 +87,14 @@ class CodeGenerator:
                             continue
                         else:
                             break
-                    self.generated_code += f"  movl ${int(num)}, -4(%rbp)\n  idiv -4(%rbp)\n"
+                    self.generated_code += (
+                        f"  movl ${int(num)}, -4(%rbp)\n  cdq\n  idivl -4(%rbp)\n"
+                    )
         self.generated_code += "  ret\n"
         return self.generated_code
-            
 
 
-ast = [('main', '14/7')]
+ast = [("main", "14/7")]
 
 # Create code generator instance
 generator = CodeGenerator(ast)
