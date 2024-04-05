@@ -73,7 +73,7 @@ class Parser:
                     self.advance()
                     operand = exp_value
                     try:
-                        equation = eval(str(operand) + str(operator) + str(self.exp()))
+                        equation = str(operand) + str(operator) + str(self.exp())
                     except ZeroDivisionError:
                         print("C-: DivisionError: Cannot divide by 0.")
                     return equation
@@ -111,24 +111,6 @@ class Parser:
 
 # test code
 #parser = Parser(tokens);result = parser.parse();print(result)
-tokens2 = [
-    ("INT", "int"),
-    ("IDENTIFIER", "main"),
-    ("OPEN_PAREN", "("),
-    ("VOID", "void"),
-    ("CLOSED_PAREN", ")"),
-    ("OPEN_BRACE", "{"),
-    ("RETURN", "return"),
-    #("OPEN_PAREN", "("),
-    ("CONSTANT", "4"),
-    ("ADD", "+"),
-    ("HYPEN", "-"),
-    ("CONSTANT", "3"),
-    #("CLOSED_PAREN", ")"),
-    ("DIVIDE", "/"),
-    ("CONSTANT", "3"),
-    ("SEMICOLON", ";"),
-    ("CLOSED_BRACE", "}")
-]
+tokens2 = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('CONSTANT', '1'), ('ADD', '+'), ('CONSTANT', '1'), ('HYPEN', '-'), ('CONSTANT', '2'), ('DIVIDE', '/'), ('CONSTANT', '2'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
 
-#parser = Parser(tokens2);result = parser.parse();print(result)
+# parser = Parser(tokens2);result = parser.parse();print(result)
