@@ -25,7 +25,7 @@ class CodeGenerator:
 
     def generate_x64(self):
         self.generated_code += ".text\n"
-        # add negation 
+        # add negation with neg
         for function_name, expression in self.parse_result:
             self.generated_code += f".globl {function_name}\n"
             self.generated_code += f"{function_name}:\n"
