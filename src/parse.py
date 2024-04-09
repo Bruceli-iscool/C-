@@ -74,10 +74,7 @@ class Parser:
                     operator = self.currentToken[1]
                     self.advance()
                     operand = exp_value
-                    try:
-                        equation = str(operand) + str(operator) + str(self.exp())
-                    except ZeroDivisionError:
-                        print("C-: DivisionError: Cannot divide by 0.")
+                    equation = str(operand) + str(operator) + str(self.exp())
                     return equation
             else:
                 return exp_value
@@ -113,6 +110,6 @@ class Parser:
 
 # test code
 #parser = Parser(tokens);result = parser.parse();print(result)
-tokens2 = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('CONSTANT', '1'), ('ADD', '+'), ('CONSTANT', '1'), ('HYPEN', '-'), ('CONSTANT', '2'), ('DIVIDE', '/'), ('CONSTANT', '2'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
+tokens2 = [('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('VOID', 'void'), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('CONSTANT', '1'), ('ADD', '+'), ('CONSTANT', '1'), ('HYPEN', '-'), ('CONSTANT', '2'), ('DIVIDE', '/'), ('CONSTANT', '2'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')]
 
-# parser = Parser(tokens2);result = parser.parse();print(result)
+parser = Parser(tokens2);result = parser.parse();print(result)
