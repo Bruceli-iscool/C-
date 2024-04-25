@@ -1,9 +1,8 @@
-
-	.text
-	.globl	_main
-_main:
-	.cfi_startproc
-	movl	$1, %eax
-	ret
-	.cfi_endproc
-
+.text
+.globl main
+main:
+  movl $14, %eax
+  movl $7, -4(%rbp)
+  cdq
+  idivl -4(%rbp)
+  ret

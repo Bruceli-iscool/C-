@@ -95,11 +95,11 @@ class CodeGenerator:
         return self.generated_code
 
 
-ast = [("main", "14/7")]
+ast = [("main", "14/7+5")]
 
 # Create code generator instance
-#generator = CodeGenerator(ast)
+generator = CodeGenerator(ast)
 
 # Generate assembly code
-#assembly_code = generator.generate()
-#print(assembly_code)
+assembly_code = generator.generate()
+print(assembly_code)
