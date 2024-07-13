@@ -10,7 +10,7 @@ def compile(file, out):
         for line in files:
             rawInput += line
         lexer = Lexer(rawInput)
-        token = lexer.lex()
+        token = lexer.lex() 
         tokens = list(token)
         parse = Parser(tokens)
         result = parse.parse()
